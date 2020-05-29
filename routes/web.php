@@ -27,6 +27,6 @@
      * and without this argument if you want)
      */
 
-    Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function (){
+    Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:admin-access')->group(function (){
         Route::resource('/users', 'UsersController', ['except' => ['show','create','store']]);
     });

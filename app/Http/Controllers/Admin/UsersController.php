@@ -33,7 +33,7 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        if(Gate::denies('edit-users')){
+        if(Gate::denies('user-edit')){
             return redirect(route('admin.users.index'));
         }
 
@@ -69,7 +69,7 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        if(Gate::denies('delete-users')){
+        if(Gate::denies('user-delete')){
             return redirect(route('admin.users.index'));
         }
 
