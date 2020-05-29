@@ -22,7 +22,7 @@
     Route::get('/home', 'HomeController@index')->name('home');
 
     /*
-     * ['except' => ['show','create','store'] is used to remove some routes we removed
+     * ['except' => [...] is used to remove some routes we removed
      * from the auto generated UserController (check with php artisan route:list with
      * and without this argument if you want)
      */
@@ -30,4 +30,5 @@
     Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:admin-access')->group(function (){
         Route::resource('/users', 'UsersController', ['except' => ['show','create','store']]);
         Route::resource('/roles', 'RolesController', ['except' => ['show']]);
+        Route::resource('/', 'AdminController', ['except' => ['show', 'create', 'store', 'edit', 'destroy', 'update']]);
     });
