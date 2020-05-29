@@ -29,4 +29,5 @@
 
     Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:admin-access')->group(function (){
         Route::resource('/users', 'UsersController', ['except' => ['show','create','store']]);
+        Route::resource('/roles', 'RolesController', ['except' => ['show']]);
     });
