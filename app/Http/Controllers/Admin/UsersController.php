@@ -3,31 +3,42 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Role;
 use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UsersController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index()
     {
-        return view('admin.users.index');
+        $users = User::all();
+        return view('admin.users.index', [
+            'users' => $users
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param User $user
-     * @return Response
      */
     public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+
+        return view('admin.users.edit', [
+            'user' => $user,
+            'roles' => $roles
+        ]);
     }
 
     /**
@@ -35,21 +46,25 @@ class UsersController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return Response
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->roles()->sync($request->roles);
+
+        return redirect()->route('admin.users.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param User $user
-     * @return Response
+     * @throws Exception
      */
     public function destroy(User $user)
     {
-        //
+        $user->roles()->detach();
+        $user->delete();
+
+        return redirect()->route('admin.users.index');
     }
 }
