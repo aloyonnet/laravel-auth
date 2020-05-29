@@ -6,6 +6,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class User
+ * @package App
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -37,7 +41,38 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles() {
         return $this->belongsToMany('App\Role');
+    }
+
+    /**
+     * We will check if we have any role
+     *
+     * @param $roles
+     * @return bool
+     */
+    public function hasAnyRole($roles) {
+        if($this->roles()->whereIn('name', $roles)->first()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * We will check if we have a precise role
+     *
+     * @param $role
+     * @return bool
+     */
+    public function hasRole($role) {
+        if($this->roles()->where('name', $role)->first()) {
+            return true;
+        }
+
+        return false;
     }
 }
